@@ -1,13 +1,190 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>terrarisztikaborze.hu</title>
-    <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
-	hi there!
-  </body>
+<html lang="hu">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Terrarisztika börze</title>
+	<meta name="description" content="Terrarisztika börzék 2020, 2021-ben Magyarországon.">
+	<meta name="keywords"
+		content="terrarisztika börze, terrarisztikai börze, 2020, budapest, lurdy, győr, dunacenter, olimpiai sportpark, terraplaza, akvarisztika börze">
+	<meta name="author" content="">
+	<meta name="robots" content="index,follow">
+	<meta property="og:title" content="Terrarisztika börzék" />
+	<meta property="og:description" content="Terrarisztika börzék eseménynaptára Magyarországon." />
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="http://www.terrarisztikaborze.hu/" />
+	<meta property="og:image" content="http://www.terrarisztikaborze.hu/img/terrarisztika_borze.jpg" />
+	<meta property="og:locale" content="hu_hu" />
+	<meta property="og:site_name" content="Terrarisztika börzék" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+	<div class="jumbotron">
+		<h1>Terrarisztika börzék</h1>
+		<p class="lead">Hüllő és madárpók börzék Magyarországon</p>
+	</div>
+
+	<div class="section-container">
+		<img class="loading-spinner" src="img/spinner.svg" alt="a tartalom töltődik">
+	</div>
+
+	<!-- footer -->
+	<div class="container">
+		<p>Forrás: <a href="https://terraplaza.org/hu/expo/informaciok">https://terraplaza.org/hu/expo/informaciok</a></p>
+		<br />
+		<br />
+		<a href="https://shop.terraplaza.org">
+			<img src="https://terraplaza.org/public/images/TerraPlaza_Shop_FoodService.jpg" alt="terrarisztika shop"
+				class="img-responsive">
+		</a>
+		<div class="bs-callout bs-callout-warning" style="font-size:15px">
+			<h4>TerraPlaza online boltja!</h4>
+			<p>
+				Élő eleségállat kiszállítás, felszerelések, TerraPlaza márkabolt!
+			</p>
+		</div>
+
+	</div>
+	<!-- <script>
+		(function (i, s, o, g, r, a, m) {
+			i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+				(i[r].q = i[r].q || []).push(arguments)
+			}, i[r].l = 1 * new Date(); a = s.createElement(o),
+				m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+		})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+		ga('create', 'UA-2615419-12', 'auto');
+		ga('send', 'pageview');
+
+	</script>
+	<div id="fb-root"></div>
+	<script>(function (d, s, id) {
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) return;
+			js = d.createElement(s); js.id = id;
+			js.src = "//connect.facebook.net/hu_HU/sdk.js#xfbml=1&version=v2.3&appId=123866057706688";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script> -->
+
+
+	<!-- jQuery -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+	<!-- get expos -->
+	<script>
+		(function () {
+
+			/**
+			 * *******************
+			 * UTILITY FUNCTIONS
+			 * *******************
+			 */
+
+			function groupExposByYear(expos) {
+				var indexYear = null;
+				var years = [];
+				var exposArr = [];
+
+				// collect individual years from expos
+				for(var expo of expos) {
+					if (indexYear != expo.event_date.substring(0, 4)) {
+						indexYear = expo.event_date.substring(0, 4);
+						years.push(indexYear);
+					}
+				}
+
+				// classify expos by year
+				for(var year of years) {
+					var group = {
+						'year': year,
+						'expos': []
+					};
+
+					for(var expo of expos) {
+						if(year == expo.event_date.substring(0, 4)) {
+							group.expos.push(expo);
+						}
+					}
+					exposArr.push(group);
+				}
+
+				return exposArr;
+			}
+
+			function getExpoName(name) {
+				return name.replace('TerraPlaza ', '').replace(' expo', '');
+			}
+
+			function getFriendlyDate(d) {
+				var months = ['Január','Február','Március','Április','Május','Június','Július','Augusztus','Szeptember','Október','November','December'];
+				var dateArr = d.split('-');
+				return months[+dateArr[1] - 1].toLocaleLowerCase() + ' ' + +dateArr[2] + '.';
+			}
+
+			/**
+			 * ***************************** 
+			 * GET EXPOS FROM TERRAPLAZA
+			 * *****************************
+			 */
+
+			$.ajax({
+				url: "https://terraplaza.com/expo/jovobeli-idopontok"
+			}).done(function (resp) {
+				if (resp.success && resp.expos) {
+					var expoGroups = groupExposByYear(resp.expos);
+					var sectionContainer = $('.section-container');
+					var sectionContent = '';
+
+					// loop through expos
+					for (expoGroup of expoGroups) {
+
+						sectionContent  = '<div class="container year-section">';
+						sectionContent += '<h2>'+expoGroup.year+'</h2>';
+						sectionContent += '<div class="row">';
+						sectionContent += '<div class="col-lg-4">';
+						sectionContent += '<h3><a href="https://terraplaza.org/hu/expo/terraplaza-budapest-informaciok" rel="nofollow">TerraPlaza Budapest</a></h3>';
+						sectionContent += '<p class="sub">terrarisztika kiállítás és vásár</p>';
+						sectionContent += '<h4><a href="https://terraplaza.org/hu/expo/terraplaza-budapest-informaciok" rel="nofollow">Lurdy ház</a></h4>';
+						sectionContent += '<p>1097 Budapest, Könyves Kálmán körút 12-14.</p>';
+						sectionContent += '</div>';
+						sectionContent += '<div class="col-lg-6">';
+						sectionContent += '<table class="table">';
+						sectionContent += '<tbody>';
+
+						for(var expo of expoGroup.expos) {
+
+							// check if location is BP -> TODO: CLASSIFY EXPOS BY LOCATION
+							// var isLocationBp = expo.name.indexOf('Győr') === -1 ? 1 : 0;
+
+							// add expo
+							sectionContent += '<tr>';
+							sectionContent += '<td>'+getFriendlyDate(expo.event_date)+'</td>';
+							sectionContent += '<td>'+getExpoName(expo.name)+'</td>';
+							sectionContent += '</tr>';
+						}
+
+						sectionContent += '</tbody>';
+						sectionContent += '</table>';
+						sectionContent += '</div>';
+						sectionContent += '</div>';
+						sectionContent += '</div>';
+
+						// remove spinner
+						$('.loading-spinner').remove();
+
+						// add section to section container
+						sectionContainer.append(sectionContent);
+					}
+
+				}
+			});
+		})();
+	</script>
+</body>
+
 </html>

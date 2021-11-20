@@ -1,0 +1,108 @@
+@import url(http://fonts.googleapis.com/css?family=Lato:400,300,700|Lobster|Poiret+One&subset=latin,latin-ext);
+
+body {
+  padding-top:0;
+  background:#EEE;
+  color:#7E7F83;
+  font-family: 'Lato', sans-serif;
+  font-weight:300
+}
+
+.jumbotron {
+  text-align: center;
+  background-color: #33383D;
+  color:#EEE;
+  border-bottom:2px solid #fff
+}
+
+.jumbotron p{
+	font-family: 'Lobster', cursive;
+	letter-spacing:1.6px;
+	color:#F9BF3B;
+}
+
+.container{
+	margin:0 auto 40px auto
+}
+
+h1{
+	color:#EEE;
+	font-family: 'Poiret One', cursive;
+}
+
+h2,h4{
+	color:#33383D;
+	font-family: 'Poiret One', cursive;
+}
+
+h2{
+	background:#336E7B;
+	color:#fff;
+	width:100px;
+	height:100px;
+	text-align:center;
+	border-radius:50%;
+	line-height:80px;
+	padding:7px 0 0 0;
+}
+h3{
+	font-family: 'Lobster', cursive;
+	color:#3D626B
+}
+
+p.sub
+{
+	color:#336E7B;
+	margin:-12px 0 10px 4px
+}
+
+h4{
+	font-size:22px;
+	color:#3D626B;
+	font-family: 'Lato', sans-serif;
+	font-weight:300
+}
+
+a{
+	color:#336E7B;
+}
+a:hover{
+	color:#336E7B;
+}
+p a{
+	font-weight:700
+}
+.img-responsive{
+	border: 3px solid #CEC6B5;
+	transition: all 0.4s ease 0s;
+}	
+.img-responsive:hover{
+	opacity:.8
+}
+
+.img-responsive{
+	margin:50px 0;
+}
+
+.label
+{
+	padding: 0.2em 1em 0.2em;
+}
+
+.table td
+{
+	width:50%
+}
+
+.section-container {
+	margin-bottom: 80px;
+}
+
+.year-section {
+	margin-bottom: 50px;
+}
+
+.loading-spinner {
+	margin: 0 auto;
+  display: flex;
+}
